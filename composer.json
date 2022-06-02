@@ -1,0 +1,25 @@
+{
+    "name": "bancolombia/wompi-php",
+    "description": "Paquete para php wompi Bancolombia",
+    "type": "library",
+    "require": {
+        "php": "7.2.5 || ^8.0",
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Bancolombia\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oscar Rey",
+            "email": "oscarhumberto1311@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "pestphp/pest": "^1.21",
+        "fakerphp/faker": "^1.19"
+    }
+}
