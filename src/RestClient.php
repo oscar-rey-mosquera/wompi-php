@@ -1,23 +1,24 @@
 <?php
+
 namespace Bancolombia;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7;
 
-class RestClient {
+class RestClient
+{
 
     public $client;
 
     public $tokens;
-    
+
     public $api_version = 'v1';
 
     public function __construct()
     {
 
         $this->init();
-        
     }
 
 
@@ -25,23 +26,24 @@ class RestClient {
      * Inicializa el cliente http
      * @return void
      */
-    public function init() {
+    public function init()
+    {
 
         $this->client =  new Client([
             'base_uri' => 'https://sandbox.wompi.co'
         ]);
-
     }
 
 
     /**
      * @param string $url
      */
-    public function get($url) {
+    public function get($url, $token = null)
+    {
 
-        return $this->handlerError(function () use ($url) {
+        return $this->handlerError(function () use ($url, $token) {
 
-            $request = $this->client->get("{$this->api_version}{$url}");
+            $request = $this->client->get("{$this->api_version}{$url}", $this->getHeader($token));
 
             return $request;
         });
@@ -51,7 +53,8 @@ class RestClient {
     /**
      * @param string $url
      */
-    public function post($url, $data = [], $token = null) {
+    public function post($url, $data = [], $token = null)
+    {
 
         return $this->handlerError(function () use ($url, $token, $data) {
 
@@ -61,10 +64,11 @@ class RestClient {
         });
     }
 
-        /**
+    /**
      * @param string $url
      */
-    public function put($url, $data = [], $token = null) {
+    public function put($url, $data = [], $token = null)
+    {
 
         return $this->handlerError(function () use ($url, $token, $data) {
 
@@ -75,42 +79,51 @@ class RestClient {
     }
 
 
-        /**
+    /**
      * @param string $url
      */
-    public function delete($url, $data = [], $token = null) {
+    public function delete($url, $data = [], $token = null)
+    {
 
         return $this->handlerError(function () use ($url, $token, $data) {
 
-            $request = $this->client->delete("{$this->api_version}{$url}", $this->getBody($data,$token));
+            $request = $this->client->delete("{$this->api_version}{$url}", $this->getBody($data, $token));
 
             return $request;
         });
     }
 
 
-    public function getBody($data = [], $token = null) {
-     
+    public function getBody($data = [], $token = null)
+    {
+
         $token = $token ?? $this->tokens['private_key'];
+        return array_merge(
+            [
+                'body' => json_encode($data),
+            ],
+            $this->getHeader($token)
+        );
+    }
+
+    public function getHeader($token)
+    {
+
         return [
-            'body' => json_encode($data),
             'headers' => [
-              'authorization' => "Bearer {$token}"
+                'authorization' => "Bearer {$token}"
             ]
         ];
-
     }
 
 
-    public function handlerError($callback) {
+    public function handlerError($callback)
+    {
 
         try {
-           return json_decode($callback()->getBody()->getContents());
+            return json_decode($callback()->getBody()->getContents());
         } catch (ClientException $e) {
-           return json_decode($e->getResponse()->getBody()->getContents());
+            return json_decode($e->getResponse()->getBody()->getContents());
         }
     }
-
-
-
 }

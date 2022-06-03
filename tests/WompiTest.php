@@ -93,3 +93,10 @@ test('Nequi', function () {
 
     expect($nequi->data->status)->toEqual('PENDING');
 });
+
+test('financial institutions', function () {
+
+    $responses =  Wompi::findFinancialInstitutions();
+
+    expect($responses)->toHaveKey('data');
+});

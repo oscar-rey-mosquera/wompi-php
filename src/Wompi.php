@@ -57,10 +57,10 @@ class Wompi
     /**
      *  lista de instituciones financieras 
      */
-    public static function financialInstitutions()
+    public static function findFinancialInstitutions()
     {
-
-        return  static::$resClient->get("/pse/financial_institutions");
+        $token = static::getPublicKey();
+        return  static::$resClient->get("/pse/financial_institutions", $token);
     }
 
 
