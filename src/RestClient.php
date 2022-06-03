@@ -58,7 +58,16 @@ class RestClient
 
         return $this->handlerError(function () use ($url, $token, $data) {
 
-            $request = $this->client->post("{$this->api_version}{$url}", $this->getBody($data, $token));
+            $body = $this->getHeader($token);
+
+            if (count($data) > 0) {
+                $body = $this->getBody($data, $token);
+            }
+
+            $request = $this->client->post(
+                "{$this->api_version}{$url}",
+                $body
+            );
 
             return $request;
         });
@@ -93,11 +102,21 @@ class RestClient
         });
     }
 
+    public function getPrivateKey()
+    {
+
+        return $this->tokens['private_key'];
+    }
+
+
+    public function getPublicKey()
+    {
+
+        return $this->tokens['public_key'];
+    }
 
     public function getBody($data = [], $token = null)
     {
-
-        $token = $token ?? $this->tokens['private_key'];
         return array_merge(
             [
                 'body' => json_encode($data),
@@ -108,6 +127,7 @@ class RestClient
 
     public function getHeader($token)
     {
+        $token = $token ?? $this->getPrivateKey();
 
         return [
             'headers' => [
@@ -119,7 +139,6 @@ class RestClient
 
     public function handlerError($callback)
     {
-
         try {
             return json_decode($callback()->getBody()->getContents());
         } catch (ClientException $e) {
