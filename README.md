@@ -88,7 +88,7 @@ Wompi::acceptance_token();
 */
 
     $bancolombia =  Wompi::bancolombia(
-        $this->acceptance_token,
+        $acceptance_token,
         $payment_description,
         [
         "amount_in_cents" => 30300000,
@@ -103,7 +103,7 @@ Wompi::acceptance_token();
 * Nequi
 */
     $nequi =  Wompi::nequi(
-        $this->acceptance_token,
+        $acceptance_token,
         $phone,
          [
         "amount_in_cents" => 30300000,
@@ -118,7 +118,7 @@ Wompi::acceptance_token();
 * PSE
 */
     $pse = Wompi::pse(
-        $this->acceptance_token,
+        $acceptance_token,
          0, // Tipo de persona, natural (0) o jurídica (1)
         'CC', // Tipo de documento, CC o NIT
         '985874589', // Número de documento
@@ -133,5 +133,121 @@ Wompi::acceptance_token();
         ]
 
     );
+    
+/**
+* Pago en efectivo en Corresponsales Bancarios Bancolombia
+*/
+  //1 Crea la transacción  
+
+    $bancolombia_collect =  Wompi::bancolombia_collect(
+        $acceptance_token,
+        [
+        "amount_in_cents" => 30300000,
+        "currency" => "COP",
+        "customer_email" => "user@test.com",
+        "reference" => '0000000000',
+         // Otros campos de la transacción a crear...
+        ]
+
+    );
+    
+   //2 Consulta la transacción creada
+     $transaction = Wompi::transaction_find_by_id($bancolombia_collect->data->id);
 
 ```
+## Fuentes de pago & Tokenización
+```php
+  /**
+   * Autocarga de clases  
+   */
+require_once 'vendor/autoload.php';
+
+use Bancolombia\Wompi;
+
+Wompi::setTokens([
+    'public_key' => '',
+    'private_key' => ''
+  ]);
+  
+  // Tokenización cuentas Nequi
+   $tokenNequi =  Wompi::tokenize_nequi($phone);
+   
+ // para chequear el estado de la suscripción
+   $subscription = Wompi::subscription_nequi($tokenNequi->data->id);
+   
+ //** Nota: Para tarjetas de crédito se tokeniza de la misma forma cuando se va a realizar un pago
+ 
+ // Crea una fuente de pago 
+  Wompi::payment_sources(
+        $tokenizeId,
+        $customer_email,
+        $acceptance_token
+    );
+    
+ //  Crea una transacción con fuente de pago
+   Wompi::transaction(
+      [
+         "payment_source_id" => 3891 // ID de la fuente de pago
+         "amount_in_cents" => 30300000,
+        "currency" => "COP",
+        "customer_email" => "user@test.com",
+        "reference" => '0000000000',
+         // Otros campos de la transacción a crear...
+      ]
+    );
+   
+```
+## Links de pago
+```php
+  /**
+   * Autocarga de clases  
+   */
+require_once 'vendor/autoload.php';
+
+use Bancolombia\Wompi;
+
+Wompi::setTokens([
+    'public_key' => '',
+    'private_key' => ''
+  ]);
+  
+ /**
+* Crear link de pago
+* @link https://docs.wompi.co/docs/en/links-de-pago
+*/
+
+$link = Wompi::link([
+    "name" => "Pago de arriendo edificio Lombardía - AP 505", // Nombre del link de pago
+    "description" => "Arriendo mensual", // Descripción del pago
+    "single_use" => false, // `false` en caso de que el link de pago pueda recibir múltiples transacciones APROBADAS o `true` si debe dejar de aceptar        transacciones después del primer pago APROBADO
+    "collect_shipping" => false // Si deseas que el cliente inserte su información de envío en el checkout, o no
+    // Otros campos de la transacción a crear...
+]);
+
+$link['response']; // respuesta
+$link['link']; // link de pago
+
+```
+## Anula una transacción
+Anula una transacción APROBADA. Aplica únicamente para transacciones con Tarjeta (tipo CARD).
+```php
+require_once 'vendor/autoload.php';
+
+use Bancolombia\Wompi;
+
+Wompi::setTokens([
+    'public_key' => '',
+    'private_key' => ''
+  ]);
+  
+Wompi::cancell_transaction($transaction_id);
+```
+
+## Contribución
+
+Puedes contribuir agregando nuevas funcionalidades, actualizaciones,  refactorización de código y notificando errores, con antelación se agradece.
+
+## License
+
+[MIT license](LICENSE).
+
