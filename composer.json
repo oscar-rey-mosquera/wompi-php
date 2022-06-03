@@ -2,6 +2,16 @@
     "name": "bancolombia/wompi-php",
     "description": "Paquete para php wompi Bancolombia",
     "type": "library",
+    "homepage": "https://github.com/oscar-rey-mosquera/wompi-php",
+    "keywords": [
+        "Wompi",
+        "php",
+        "Bancolombia",
+        "nequi",
+        "wompi-php",
+        "pagos",
+        "online"
+    ],
     "require": {
         "php": "7.2.5 || ^8.0",
         "guzzlehttp/guzzle": "^7.4"
