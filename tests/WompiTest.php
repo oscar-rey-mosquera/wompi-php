@@ -1,5 +1,7 @@
 <?php
 
+namespace Bancolombia;
+
 use Bancolombia\Wompi;
 
 require __DIR__ . '/env.php';
@@ -20,7 +22,6 @@ beforeEach(function () use ($env) {
         "customer_email" => $this->faker->email(),
         "reference" => $this->faker->email(),
     ];
-
 });
 
 test('Configuración class wompi', function () {
@@ -60,7 +61,6 @@ test('Tokeniza una tarjeta', function () {
     sleep(10);
 
     expect($paymentCard->data->status)->toEqual('PENDING');
-
 });
 
 test('Botón de Transferencia Bancolombia', function () {
@@ -78,7 +78,6 @@ test('Botón de Transferencia Bancolombia', function () {
     expect($bancolombia->data->status)->toEqual('PENDING');
 
     expect($findBancolombia->data->status)->toEqual('APPROVED');
-
 });
 
 
@@ -88,17 +87,17 @@ test('Nequi', function () {
 
     $nequi =  Wompi::nequi(
         $this->acceptance_token,
-         $phone,
+        $phone,
         $this->fakeData
     );
 
-    expect($nequi->data->status)->toEqual('PENDING');
+    checkId($nequi->data->id);
 
     $tokenNequi =  Wompi::tokenize_nequi($phone);
 
     $subscription = Wompi::subscription_nequi($tokenNequi->data->id);
 
-    expect($subscription->data->status)->toEqual('PENDING');
+    checkId($subscription->data->id);
 });
 
 test('financial institutions', function () {
@@ -118,7 +117,7 @@ test('financial institutions', function () {
 
     );
 
-    expect($responses->data->status)->toEqual('PENDING');
+    checkId($responses->data->id);
 });
 
 test('Pago en efectivo en Corresponsales Bancarios Bancolombia', function () {
@@ -130,6 +129,21 @@ test('Pago en efectivo en Corresponsales Bancarios Bancolombia', function () {
 
     $findBancolombia = Wompi::transaction_find_by_id($responses->data->id);
 
-    expect($findBancolombia->data->status)->toEqual('PENDING');
+    checkId($findBancolombia->data->id);
+});
+
+test('link de pago', function ()  {
+
+  $link =  Wompi::link(
+        [
+            "name" => "Pago de arriendo edificio Lombardía - AP 505", // Nombre del link de pago
+            "description" => "Arriendo mensual", // Descripción del pago
+            "single_use" => false, // `false` en caso de que el link de pago pueda recibir múltiples transacciones APROBADAS o `true` si debe dejar de aceptar transacciones después del primer pago APROBADO
+            "collect_shipping" => false // Si deseas que el cliente inserte su información de envío en el checkout, o no
+        ]
+    );
+
+    checkId($link['response']->data->id);
 
 });
+

@@ -43,3 +43,9 @@ function something()
 {
     // ..
 }
+
+
+function checkId($id)
+{
+  return expect(is_null($id))->toBeFalse();
+}

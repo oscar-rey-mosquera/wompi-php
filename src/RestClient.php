@@ -37,6 +37,7 @@ class RestClient
 
     /**
      * @param string $url
+     * @param string $token
      */
     public function get($url, $token = null)
     {
@@ -52,6 +53,8 @@ class RestClient
 
     /**
      * @param string $url
+     * @param array $data
+     * @param string $token
      */
     public function post($url, $data = [], $token = null)
     {
@@ -75,6 +78,8 @@ class RestClient
 
     /**
      * @param string $url
+     * @param array $data
+     * @param string $token
      */
     public function put($url, $data = [], $token = null)
     {
@@ -90,6 +95,8 @@ class RestClient
 
     /**
      * @param string $url
+     * @param string $token
+     * @param array $data
      */
     public function delete($url, $data = [], $token = null)
     {
@@ -102,6 +109,9 @@ class RestClient
         });
     }
 
+    /**
+     * private key configurada
+     */
     public function getPrivateKey()
     {
 
@@ -109,12 +119,18 @@ class RestClient
     }
 
 
+    /**
+     * public key configurada
+     */
     public function getPublicKey()
     {
 
         return $this->tokens['public_key'];
     }
 
+    /**
+     * Preparación del cuerpo de la petición http
+     */
     public function getBody($data = [], $token = null)
     {
         return array_merge(
@@ -125,6 +141,9 @@ class RestClient
         );
     }
 
+    /**
+     * Generación de cabeceras de la petición http
+     */
     public function getHeader($token)
     {
         $token = $token ?? $this->getPrivateKey();
@@ -136,7 +155,9 @@ class RestClient
         ];
     }
 
-
+    /**
+     * Enganchado de errores
+     */
     public function handlerError($callback)
     {
         try {

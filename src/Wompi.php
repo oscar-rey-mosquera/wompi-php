@@ -48,6 +48,7 @@ class Wompi
     /**
      * Tokeniza una tarjeta
      * @param array $data
+     * @link https://docs.wompi.co/docs/en/fuentes-de-pago
      */
     public static function tokenize_card($data)
     {
@@ -58,6 +59,7 @@ class Wompi
     /**
      * Tokeniza una cuenta nequi
      * @param string $phone_number
+     * @link https://docs.wompi.co/docs/en/fuentes-de-pago
      */
     public static function tokenize_nequi($phone_number)
     {
@@ -71,8 +73,9 @@ class Wompi
     }
 
     /**
-     * chequear el estado de la suscripción en nequi,
+     * chequear el estado de la suscripción en nequi
      * @param string $tokenizeNequiId
+     * @link https://docs.wompi.co/docs/en/fuentes-de-pago
      */
     public static function subscription_nequi($tokenizeNequiId)
     {
@@ -84,7 +87,8 @@ class Wompi
 
 
     /**
-     *  lista de instituciones financieras 
+     *  lista de instituciones financieras
+     * @link https://app.swaggerhub.com/apis-docs/waybox/wompi/1.0.0-oas3#/Comercios/get_merchants__merchantPublicKey_ 
      */
     public static function financial_institutions()
     {
@@ -97,6 +101,7 @@ class Wompi
      * @param string $customer_email
      * @param string $token
      * @param string $acceptance_token
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function payment_sources(
         $tokenizeId,
@@ -120,6 +125,7 @@ class Wompi
      * @param string $token
      * @param string $acceptanceToken
      * @param int $installments
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function card($acceptanceToken, $token, $installments, $data)
     {
@@ -143,6 +149,7 @@ class Wompi
      * @param array $data
      * @param string $phoneNumber
      * @param string $acceptanceToken
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function nequi($acceptanceToken, $phoneNumber, $data)
     {
@@ -164,6 +171,7 @@ class Wompi
      * Pago en efectivo en corresponsales bancarios bancolombia
      * @param array $data
      * @param string $acceptanceToken
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function bancolombia_collect($acceptanceToken, $data)
     {
@@ -190,6 +198,7 @@ class Wompi
      * @param string $description nombre de lo que se está pagando. Máximo 30 caracteres
      * @param string $financial_institution_code código (`code`) de la institución financiera
      * @param string $acceptanceToken
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function pse(
         $acceptanceToken,
@@ -225,7 +234,7 @@ class Wompi
      * @param string $token
      * @param string $acceptanceToken
      * @param int $installments
-     * @todo Quitar el sandbox_status
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function bancolombia($acceptanceToken, $description, $data)
     {
@@ -256,6 +265,7 @@ class Wompi
     /**
      * Realiza la transacción
      * @param array $data
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function transaction($data)
     {
@@ -266,15 +276,18 @@ class Wompi
     /**
      * Realiza la transacción
      * @param string $reference
+     * @link https://app.swaggerhub.com/apis-docs/waybox/wompi/1.0.0-oas3#/
      */
     public static function find_transaction($reference)
     {
         return  static::$resClient->get("/transactions?reference={$reference}");
     }
 
+
     /**
      * cancelar la transacción
      * @param string $transaction_id
+     * @link https://app.swaggerhub.com/apis-docs/waybox/wompi/1.0.0-oas3#/
      */
     public static function cancell_transaction($transaction_id)
     {
@@ -283,8 +296,24 @@ class Wompi
     }
 
     /**
+     * Creación del link de pago
+     * @param array $data
+     * @link https://docs.wompi.co/docs/en/links-de-pago
+     */
+    public static function link($data)
+    {
+        $result = static::$resClient->post("/payment_links", $data);
+
+        return [
+            'response' => $result,
+            'link' => "https://checkout.wompi.co/l/{$result->data->id}"
+        ];
+    }
+
+    /**
      * consultar  transacción
      * @param array $data
+     * @link https://docs.wompi.co/docs/en/metodos-de-pago
      */
     public static function transaction_find_by_id($transaction_id)
     {
