@@ -2,7 +2,6 @@
 
 namespace Bancolombia;
 
-use Bancolombia\RestClient;
 
 class Wompi
 {
@@ -12,20 +11,22 @@ class Wompi
     /**
      * wompi constructor.
      */
-    public static function initialize()
+    public static function initialize($tokens)
     {
-        static::$resClient = new RestClient();
+        static::$resClient = new RestClient($tokens);
     }
 
 
     /**
      * Agregar tonkens
      * @param array $tokens
+     * @param string $env
+     * @return string $token
      */
     public static function setTokens($tokens)
     {
-        self::initialize();
-        self::$resClient->tokens = $tokens;
+        self::initialize($tokens);
+      
     }
 
     /**

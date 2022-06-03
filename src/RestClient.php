@@ -4,7 +4,6 @@ namespace Bancolombia;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7;
 
 class RestClient
 {
@@ -15,9 +14,9 @@ class RestClient
 
     public $api_version = 'v1';
 
-    public function __construct()
+    public function __construct($tokens)
     {
-
+       $this->tokens = $tokens;
         $this->init();
     }
 
@@ -28,9 +27,15 @@ class RestClient
      */
     public function init()
     {
+        $url = 'https://sandbox.wompi.co';
+
+        if(str_contains($this->getPrivateKey(), 'prod') && str_contains($this->getPublicKey(), 'prod') ) {
+
+            $url = 'https://production.wompi.co';
+        }
 
         $this->client =  new Client([
-            'base_uri' => 'https://sandbox.wompi.co'
+            'base_uri' => $url
         ]);
     }
 
