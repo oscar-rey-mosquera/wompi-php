@@ -8,19 +8,26 @@
 <a href="https://packagist.org/packages/bancolombia-dev/wompi-php"><img src="https://img.shields.io/packagist/l/bancolombia-dev/wompi-php" alt="License"></a>
 </p>
 
-
 ## Introducción
+
 Este es un paquete de la api de [wompi](https://wompi.co/) que pertenece al grupo Bancolombia para php.
 
-## 💻 Instalación 
+## 💻 Instalación
 
 Para instalar utiliza [composer](https://getcomposer.org/).
 
-```.bash
+```.bash  
 composer require bancolombia-dev/wompi-php
 ```
+
+## Test
+
+Dependiendo de la llave pública y llave privada es el entorno.
+
 ## 🔧 Uso del paquete
+
 Para iniciar a utilizar el paquete necesitas tu llave pública y llave privada de tu [cuenta wompi](https://comercios.wompi.co/developers).
+
 ```php
   /**
    * Autocarga de clases  
@@ -155,7 +162,9 @@ Wompi::acceptance_token();
      $transaction = Wompi::transaction_find_by_id($bancolombia_collect->data->id);
 
 ```
+
 ## Fuentes de pago & Tokenización
+
 ```php
   /**
    * Autocarga de clases  
@@ -197,7 +206,9 @@ Wompi::setTokens([
     );
    
 ```
+
 ## Links de pago
+
 ```php
   /**
    * Autocarga de clases  
@@ -228,8 +239,11 @@ $link['response']; // respuesta
 $link['link']; // link de pago
 
 ```
+
 ## Anula una transacción
+
 Anula una transacción APROBADA. Aplica únicamente para transacciones con Tarjeta (tipo CARD).
+
 ```php
 require_once 'vendor/autoload.php';
 
@@ -250,4 +264,3 @@ Puedes contribuir agregando nuevas funcionalidades, actualizaciones,  refactori
 ## License
 
 [MIT license](LICENSE).
-
