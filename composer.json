@@ -1,5 +1,5 @@
 {
-    "name": "bancolombia/wompi-php",
+    "name": "bancolombia-dev/wompi-php",
     "description": "Paquete para php wompi Bancolombia",
     "type": "library",
     "homepage": "https://github.com/oscar-rey-mosquera/wompi-php",
