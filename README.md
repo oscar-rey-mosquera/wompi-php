@@ -36,7 +36,7 @@ require_once 'vendor/autoload.php';
 
 use Bancolombia\Wompi;
 
-Wompi::setTokens([
+Wompi::initialize([
     'public_key' => '',
     'private_key' => ''
   ]);
@@ -173,7 +173,7 @@ require_once 'vendor/autoload.php';
 
 use Bancolombia\Wompi;
 
-Wompi::setTokens([
+Wompi::initialize([
     'public_key' => '',
     'private_key' => ''
   ]);
@@ -217,7 +217,7 @@ require_once 'vendor/autoload.php';
 
 use Bancolombia\Wompi;
 
-Wompi::setTokens([
+Wompi::initialize([
     'public_key' => '',
     'private_key' => ''
   ]);
@@ -249,12 +249,35 @@ require_once 'vendor/autoload.php';
 
 use Bancolombia\Wompi;
 
-Wompi::setTokens([
+Wompi::initialize([
     'public_key' => '',
     'private_key' => ''
   ]);
   
 Wompi::cancell_transaction($transaction_id);
+```
+
+## Verifica la autenticidad de un evento (webhook)
+
+Por seguridad necesitas  checkear eventos de webhook y para eso necesitas tu [secret event](https://comercios.wompi.co/developers).
+
+```php
+require_once 'vendor/autoload.php';
+
+use Bancolombia\Wompi;
+
+Wompi::initialize([
+    'public_key' => '',
+    'private_key' => '',
+    //Agregar event key
+    'private_event_key' => '' 
+  ]);
+
+//@link https://www.geeksforgeeks.org/how-to-receive-json-post-with-php
+$request = file_get_contents('php://input');
+
+//@return bool
+Wompi::check_event(json_decode($request, true)));
 ```
 
 ## Contribución

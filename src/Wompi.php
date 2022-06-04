@@ -312,14 +312,14 @@ class Wompi
 
     /**
      * Verifica la autenticidad de un evento
-     * @param mixed $response
+     * @param mixed $request
      * @link https://docs.wompi.co/docs/en/eventos
      * @return bool
      */
-    public static function check_event($response)
+    public static function check_event($request)
     {
-        $data = $response['data'];
-        $properties = $response['signature']['properties'];
+        $data = $request['data'];
+        $properties = $request['signature']['properties'];
         $eventData = $data[explode('.', $properties[0])[0]];
         $privateEventKey = static::$resClient->getPrivateEventKey();
 
@@ -329,10 +329,10 @@ class Wompi
             $token = "{$token}{$eventData[explode('.', $propertie)[1]]}";
         }
 
-        $token = "{$token}{$response['timestamp']}{$privateEventKey}";
+        $token = "{$token}{$request['timestamp']}{$privateEventKey}";
 
         $checksum = hash('sha256', $token);
 
-        return $checksum === $response['signature']['checksum'];
+        return $checksum === $request['signature']['checksum'];
     }
 }
