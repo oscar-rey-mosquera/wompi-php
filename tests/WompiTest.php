@@ -10,7 +10,7 @@ require __DIR__ . '/env.php';
 beforeEach(function () use ($env) {
     $this->config = $env;
 
-    Wompi::setTokens($this->config);
+    Wompi::initialize($this->config);
 
     $this->faker = \Faker\Factory::create();
 

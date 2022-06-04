@@ -133,6 +133,16 @@ class RestClient
         return $this->tokens['private_key'];
     }
 
+     /**
+     * private event key configurada
+     */
+    public function getPrivateEventKey()
+    {
+
+        return $this->tokens['private_event_key'];
+    }
+
+
 
     /**
      * public key configurada

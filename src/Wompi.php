@@ -18,20 +18,8 @@ class Wompi
 
 
     /**
-     * Agregar tonkens
-     * @param array $tokens
-     * @param string $env
-     * @return string $token
-     */
-    public static function setTokens($tokens)
-    {
-        self::initialize($tokens);
-      
-    }
-
-    /**
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public static function getTokens()
     {
@@ -89,7 +77,7 @@ class Wompi
 
     /**
      *  lista de instituciones financieras
-     * @link https://app.swaggerhub.com/apis-docs/waybox/wompi/1.0.0-oas3#/Comercios/get_merchants__merchantPublicKey_ 
+     * @link https://app.swaggerhub.com/apis-docs/waybox/wompi/1.0.0-oas3#/Comercios/get_merchants__merchantPublicKey_
      */
     public static function financial_institutions()
     {
@@ -320,5 +308,22 @@ class Wompi
     {
 
         return  static::$resClient->get("/transactions/{$transaction_id}");
+    }
+
+    /**
+     * Verifica la autenticidad de un evento
+     * @param mixed $response
+     * @link https://docs.wompi.co/docs/en/eventos
+     * @return bool
+     */
+    public static function check_event($response)
+    {
+        $data = $response['data'];
+        $transaction = $data['transaction'];
+        $privateEventKey = static::$resClient->getPrivateEventKey();
+        $token = "{$transaction['id']}{$transaction['status']}{$transaction['amount_in_cents']}{$response['timestamp']}{$privateEventKey}";
+        $checksum = hash('sha256', $token);
+
+        return $checksum === $response['signature']['checksum'];
     }
 }
