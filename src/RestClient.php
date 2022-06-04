@@ -27,6 +27,18 @@ class RestClient
      */
     public function init()
     {
+        $this->client =  new Client([
+            'base_uri' => $this->getBaseUrl()
+        ]);
+    }
+
+   
+    /**
+     * Obtiene la url base de la api
+     * @return string
+     */
+    public function getBaseUrl()
+    {
         $url = 'https://sandbox.wompi.co';
 
         if(str_contains($this->getPrivateKey(), 'prod') && str_contains($this->getPublicKey(), 'prod') ) {
@@ -34,9 +46,7 @@ class RestClient
             $url = 'https://production.wompi.co';
         }
 
-        $this->client =  new Client([
-            'base_uri' => $url
-        ]);
+        return $url;
     }
 
 
