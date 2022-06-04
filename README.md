@@ -22,7 +22,7 @@ composer require bancolombia-dev/wompi-php
 
 ## Test
 
-Dependiendo de la llave pública y llave privada es el entorno.
+Dependiendo de la llave pública y llave privada es el entorno de trabajo.
 
 ## 🔧 Uso del paquete
 
