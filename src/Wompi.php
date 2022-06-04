@@ -319,9 +319,18 @@ class Wompi
     public static function check_event($response)
     {
         $data = $response['data'];
-        $transaction = $data['transaction'];
+        $properties = $response['signature']['properties'];
+        $eventData = $data[explode('.', $properties[0])[0]];
         $privateEventKey = static::$resClient->getPrivateEventKey();
-        $token = "{$transaction['id']}{$transaction['status']}{$transaction['amount_in_cents']}{$response['timestamp']}{$privateEventKey}";
+
+        $token = '';
+
+        foreach ($properties as $propertie) {
+            $token = "{$token}{$eventData[explode('.', $propertie)[1]]}";
+        }
+
+        $token = "{$token}{$response['timestamp']}{$privateEventKey}";
+
         $checksum = hash('sha256', $token);
 
         return $checksum === $response['signature']['checksum'];
