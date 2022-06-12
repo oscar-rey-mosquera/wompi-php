@@ -1,0 +1,33 @@
+name: test
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP with composer v2
+        uses: shivammathur/setup-php@v2
+        with:
+         php-version: '8.1'
+         tools: composer:v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: copy phpunit.example to phpunit
+        run: cp phpunit.example.xml phpunit.xml
+
+      - name: Run Tests
+      - uses: NWBY/pest-action@v1.2.0
+        env:
+         WOMPI_PUBLIC_KEY: ${{secrets.WOMPI_PUBLIC_KEY}}
+         WOMPI_PRIVATE_KEY: ${{secrets.WOMPI_PRIVATE_KEY}}
+         WOMPI_PRIVATE_EVENT_KEY: ${{secrets.WOMPI_PRIVATE_EVENT_KEY}}

@@ -23,8 +23,8 @@
         <server name="DB_CONNECTION" value="sqlite"/>
         <server name="DB_DATABASE" value=":memory:"/>
         <server name="APP_ENV" value="testing"/>
-        <env name="WOMPI_PUBLIC_KEY" value="pub_test_4M2m1vSSxwrFiFklRam5CzGKLl61EkA7" />
-        <env name="WOMPI_PRIVATE_KEY" value="prv_test_7dW1MDew5PvD4AD7GW0pECRbUONCSdzF" />
-        <env name="WOMPI_PRIVATE_EVENT_KEY" value="test_events_D6o8gboDlxmEb6PkfmbKoijKFPBQp6rq" />
+        <env name="WOMPI_PUBLIC_KEY" value="" />
+        <env name="WOMPI_PRIVATE_KEY" value="" />
+        <env name="WOMPI_PRIVATE_EVENT_KEY" value="" />
     </php>
 </phpunit>
