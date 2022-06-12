@@ -31,5 +31,8 @@
     "require-dev": {
         "pestphp/pest": "^1.21",
         "fakerphp/faker": "^1.19"
+    },
+    "scripts": {
+        "test": "vendor/bin/pest"
     }
 }

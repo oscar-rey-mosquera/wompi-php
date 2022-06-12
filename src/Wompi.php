@@ -318,6 +318,7 @@ class Wompi
      */
     public static function check_event($request)
     {
+       if(count($request) && is_array($request)){
         $data = $request['data'];
         $properties = $request['signature']['properties'];
         $eventData = $data[explode('.', $properties[0])[0]];
@@ -334,5 +335,9 @@ class Wompi
         $checksum = hash('sha256', $token);
 
         return $checksum === $request['signature']['checksum'];
+
+       }
+
+       return false;
     }
 }
