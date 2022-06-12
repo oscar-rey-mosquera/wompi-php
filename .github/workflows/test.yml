@@ -26,7 +26,7 @@ jobs:
         run: cp phpunit.example.xml phpunit.xml
 
       - name: Run Tests
-        uses: NWBY/pest-action@v1.2.0
+        run: composer run test
         env:
          WOMPI_PUBLIC_KEY: ${{secrets.WOMPI_PUBLIC_KEY}}
          WOMPI_PRIVATE_KEY: ${{secrets.WOMPI_PRIVATE_KEY}}
