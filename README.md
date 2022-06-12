@@ -6,6 +6,7 @@
 <a href="https://packagist.org/packages/bancolombia-dev/wompi-php"><img src="https://img.shields.io/packagist/dt/bancolombia-dev/wompi-php" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/bancolombia-dev/wompi-php"><img src="https://img.shields.io/packagist/v/bancolombia-dev/wompi-php" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/bancolombia-dev/wompi-php"><img src="https://img.shields.io/packagist/l/bancolombia-dev/wompi-php" alt="License"></a>
+ <a href="https://github.com/oscar-rey-mosquera/wompi-php/actions/workflows/test.yml"><img src="https://github.com/oscar-rey-mosquera/wompi-php/actions/workflows/test.yml/badge.svg" alt="Test"></a>
 </p>
 
 ## Introducción
