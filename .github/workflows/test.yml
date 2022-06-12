@@ -21,10 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
-
-      - name: copy phpunit.example to phpunit
-        run: cp phpunit.example.xml phpunit.xml
-
+        
       - name: Run Tests
         run: composer run test
         env:
