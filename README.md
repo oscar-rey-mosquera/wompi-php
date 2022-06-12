@@ -277,7 +277,7 @@ Wompi::initialize([
 $request = file_get_contents('php://input');
 
 //@return bool
-Wompi::check_event(json_decode($request, true)));
+Wompi::check_webhook(json_decode($request, true)));
 ```
 
 ## Contribución

@@ -147,15 +147,23 @@ test('link de pago', function ()  {
 
 });
 
-test('check_event', function () {
+test('check_webhook', function () {
 
-    list($webHookFake, $webHookBadFake) = webHookFake();
+    list($webHookFake, $webHookBadFake, $webHookSubcriptionFake) = webHookFake();
 
-    expect(Wompi::check_event($webHookFake))->toEqual(true);
+    expect(Wompi::check_webhook($webHookFake))->toEqual(true);
 
-    expect(Wompi::check_event($webHookBadFake))->toEqual(false);
+    expect(Wompi::check_webhook($webHookSubcriptionFake))->toEqual(true);
 
-    expect(Wompi::check_event([]))->toEqual(false);
+    expect(Wompi::check_webhook($webHookBadFake))->toEqual(false);
+
+    expect(Wompi::check_webhook([]))->toEqual(false);
+
+    expect(Wompi::check_webhook([
+        "event" => [],
+        "data" => '',
+        "signature" => ''
+    ]))->toEqual(false);
 
 });
 
@@ -250,7 +258,28 @@ function webHookFake()
                 ]
             ],
             "environment" => "test"
-        ]
+        ],
+        [
+            "event" => "nequi_token.updated", 
+            "data" => [
+                  "nequi_token" => [
+                     "id" => "nequi_test_ZD3UZScncg5SHSqdIQgfedK2XCnrhhQm", 
+                     "status" => "APPROVED", 
+                     "phone_number" => "3991111111" 
+                  ] 
+               ], 
+            "sent_at" => "2022-06-12T17:48:05.842Z", 
+            "timestamp" => 1655056085, 
+            "signature" => [
+                        "checksum" => "df68aa053dbbdbd205676f0b2300b94bdf2117507f4ed27af0457eb2549195f7", 
+                        "properties" => [
+                           "nequi_token.id", 
+                           "nequi_token.status", 
+                           "nequi_token.phone_number" 
+                        ] 
+                     ], 
+            "environment" => "test" 
+         ]
     ];
 
 }

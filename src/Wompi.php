@@ -2,7 +2,6 @@
 
 namespace Bancolombia;
 
-
 class Wompi
 {
 
@@ -311,33 +310,35 @@ class Wompi
     }
 
     /**
-     * Verifica la autenticidad de un evento
+     * Verifica el signarute de un webhook
      * @param mixed $request
      * @link https://docs.wompi.co/docs/en/eventos
      * @return bool
      */
-    public static function check_event($request)
+    public static function check_webhook($request)
     {
-       if(count($request) && is_array($request)){
-        $data = $request['data'];
-        $properties = $request['signature']['properties'];
-        $eventData = $data[explode('.', $properties[0])[0]];
-        $privateEventKey = static::$resClient->getPrivateEventKey();
+        try {
 
-        $token = '';
+            $data = $request['data'];
+            $properties = $request['signature']['properties'];
+            $eventData = $data[explode('.', $properties[0])[0]];
+            $privateEventKey = static::$resClient->getPrivateEventKey();
 
-        foreach ($properties as $propertie) {
-            $token = "{$token}{$eventData[explode('.', $propertie)[1]]}";
+            $token = '';
+
+            foreach ($properties as $propertie) {
+                $key = explode('.', $propertie)[1];
+                $token = "{$token}{$eventData[$key]}";
+            }
+
+            $token = "{$token}{$request['timestamp']}{$privateEventKey}";
+
+            $checksum = hash('sha256', $token);
+
+            return $checksum === $request['signature']['checksum'];
+        } catch (\Throwable $th) {
+
+            return false;
         }
-
-        $token = "{$token}{$request['timestamp']}{$privateEventKey}";
-
-        $checksum = hash('sha256', $token);
-
-        return $checksum === $request['signature']['checksum'];
-
-       }
-
-       return false;
     }
 }
